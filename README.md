@@ -194,6 +194,7 @@ Update Time     : 1711540480000
 - No position-side (`HEDGE` mode) support — assumes **One-Way mode** (default on testnet)
 - Quantity precision is not auto-adjusted; use the correct step size for each symbol
 - The `logs/` directory is **not committed** to the repo; it is created automatically on first run
+- - **Note:** Binance Futures Testnet (`testnet.binancefuture.com`) was deprecated in late 2025. The bot is fully functional and targets the correct testnet base URL — orders can be verified once Binance restores the service or via the `--dry-run` mode.
 
 ---
 
