@@ -1,0 +1,7 @@
+2026-03-27T18:14:24 | ERROR    | trading_bot | Validation failed: Price is required for LIMIT orders.
+2026-03-27T18:14:40 | INFO     | trading_bot | Submitting order | symbol=BTCUSDT side=BUY type=MARKET qty=0.001 price=None
+2026-03-27T18:14:40 | INFO     | trading_bot | Submitting order | symbol=BTCUSDT side=BUY type=LIMIT qty=0.001 price=65000.0
+2026-03-27T18:14:51 | INFO     | trading_bot | Submitting order | symbol=BTCUSDT side=BUY type=MARKET qty=0.001 price=None
+2026-03-27T18:14:51 | INFO     | trading_bot | Submitting order | symbol=BTCUSDT side=SELL type=LIMIT qty=0.001 price=70000.0
+2026-03-27T18:14:51 | INFO     | trading_bot | Submitting order | symbol=BTCUSDT side=BUY type=STOP_MARKET qty=0.001 price=66000.0
+2026-03-27T23:59:35 | ERROR    | trading_bot | Validation failed: Invalid quantity 'abc'. Must be a positive number.
