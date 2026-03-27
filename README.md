@@ -21,13 +21,15 @@ A clean, lightweight Python CLI bot for placing orders on the **Binance Futures 
 trading_bot/
 ├── bot/
 │   ├── __init__.py
-│   ├── client.py         # Binance REST API wrapper (signing, request, error handling)
-│   ├── orders.py         # Order placement logic + formatted output
-│   ├── validators.py     # Input validation
-│   └── logging_config.py # Rotating file + console logger
+│   ├── client.py          # Binance REST API wrapper (signing, request, error handling)
+│   ├── orders.py          # Order placement logic + formatted output
+│   ├── validators.py      # Input validation
+│   └── logging_config.py  # Rotating file + console logger
 ├── logs/
-│   └── trading_bot.log   # Generated at runtime
-├── cli.py                # argparse CLI entry point
+│   └── trading_bot.log    # Auto-created on first run (not committed)
+├── cli.py               # argparse CLI entry point
+├── .env.example         # Template for environment variables
+├── .gitignore
 ├── README.md
 └── requirements.txt
 ```
@@ -50,18 +52,43 @@ pip install -r requirements.txt
 
 ### 3. Set credentials
 
-Either pass them as flags on every command:
+Copy the example env file and fill in your testnet credentials:
 
 ```bash
---api-key YOUR_KEY --api-secret YOUR_SECRET
+cp .env.example .env
 ```
 
-Or export them as environment variables (recommended):
+Then edit `.env`:
+
+```
+BINANCE_API_KEY=your_testnet_api_key
+BINANCE_API_SECRET=your_testnet_api_secret
+```
+
+> **Note:** `.env` is listed in `.gitignore` and will never be committed.
+
+Alternatively, export them directly in your shell:
 
 ```bash
 export BINANCE_API_KEY=your_testnet_api_key
 export BINANCE_API_SECRET=your_testnet_api_secret
 ```
+
+Or pass them as flags on every command:
+
+```bash
+--api-key YOUR_KEY --api-secret YOUR_SECRET
+```
+
+---
+
+## Logging
+
+On first run, the bot automatically creates the `logs/` directory (if it does not exist) and writes structured logs to `logs/trading_bot.log`.
+
+- **You do not need to create the `logs/` folder manually.**
+- The log file rotates at **5 MB** and keeps **3 backups**.
+- The `logs/` directory is excluded from version control via `.gitignore`.
 
 ---
 
@@ -85,7 +112,7 @@ python cli.py \
   --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 70000
 ```
 
-### Stop-Market BUY order (bonus order type)
+### Stop-Market BUY order
 
 ```bash
 python cli.py \
@@ -125,35 +152,35 @@ python cli.py \
 | `--reduce-only` | No | Set `reduceOnly` flag on the order |
 | `--log-level` | No | `DEBUG` / `INFO` / `WARNING` / `ERROR` (default: `INFO`) |
 
+*Can also be set via environment variables.
+
 ---
 
 ## Example Output
 
 ```
 ┌─────────────────────────────────────────┐
-│           ORDER REQUEST                 │
+│           ORDER REQUEST           │
 └─────────────────────────────────────────┘
-  Symbol        : BTCUSDT
-  Side          : BUY
-  Type          : MARKET
-  Quantity      : 0.001
-
+Symbol    : BTCUSDT
+Side      : BUY
+Type      : MARKET
+Quantity  : 0.001
 ┌─────────────────────────────────────────┐
-│           ORDER RESPONSE                │
+│           ORDER RESPONSE          │
 └─────────────────────────────────────────┘
-  Order ID      : 3221685119
-  Client OID    : bot_market_001
-  Symbol        : BTCUSDT
-  Side          : BUY
-  Type          : MARKET
-  Status        : FILLED
-  Quantity      : 0.001
-  Executed Qty  : 0.001
-  Avg Price     : 67845.20
-  Price         : 0
-  Time in Force : GTC
-  Update Time   : 1711540480000
-
+Order ID        : 3221685119
+Client OID      : bot_market_001
+Symbol          : BTCUSDT
+Side            : BUY
+Type            : MARKET
+Status          : FILLED
+Quantity        : 0.001
+Executed Qty    : 0.001
+Avg Price       : 67845.20
+Price           : 0
+Time in Force   : GTC
+Update Time     : 1711540480000
 ✓ Order placed SUCCESSFULLY
 ```
 
@@ -166,4 +193,10 @@ python cli.py \
 - `timeInForce` defaults to `GTC` for LIMIT orders
 - No position-side (`HEDGE` mode) support — assumes **One-Way mode** (default on testnet)
 - Quantity precision is not auto-adjusted; use the correct step size for each symbol
-- Log file is written to `logs/trading_bot.log` relative to the project root
+- The `logs/` directory is **not committed** to the repo; it is created automatically on first run
+
+---
+
+## License
+
+MIT
